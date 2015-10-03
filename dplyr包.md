@@ -1,23 +1,30 @@
-## 导入一些包
+### 导入一些包
+
 >install.packages("Lahman")
 >install.packages("nycflights13")
 >library("nycflights13")
 >library("Lahman")
 >library("dplyr")
-## 选择
-batting <- select(tbl_df(Batting),playerID,yearID,teamID,G,AB:H)
-batting <- arrange(batting,playerID,yearID,teamID)
-players <- group_by(batting,playerID)
 
-filter(players,min_rank(desc(H))<=2 & H>0)
-mutate(players,rs = min_rank(desc(H)))
-mutate(players,G_rank=min_rank(G))
+### 选择
+>batting <- select(tbl_df(Batting),playerID,yearID,teamID,G,AB:H)
+>batting <- arrange(batting,playerID,yearID,teamID)
+>players <- group_by(batting,playerID)
 
-filter(players, G>lag(G))
-mutate(players, G_change = (G-log(G))/(yearID-lag(yearID)))
+### 过滤
+&或者"," 表示且， | 表示或 
+>filter(players,min_rank(desc(H))<=2 & H>0)
 
-filter(players, G>mean(G))
-mutate(players, G_z=(G-mean(G))/sd(G))
+### 生成新的列
+>mutate(players,rs = min_rank(desc(H)))
+>mutate(players,G_rank=min_rank(G))
+
+### 引用前一个元素
+>filter(players, G>lag(G))
+>mutate(players, G_change = (G-log(G))/(yearID-lag(yearID)))
+
+>filter(players, G>mean(G))
+>mutate(players, G_z=(G-mean(G))/sd(G))
 
 mutate(players, percent_rank(desc(G)))
 D %>% group_by(x1) %>% mutate(n=percent_rank(x2))
