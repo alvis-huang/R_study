@@ -1,8 +1,10 @@
-install.packages("Lahman")
-install.packages("nycflights13")
-library("nycflights13")
-library("Lahman")
-library("dplyr")
+## 导入一些包
+>install.packages("Lahman")
+>install.packages("nycflights13")
+>library("nycflights13")
+>library("Lahman")
+>library("dplyr")
+## 选择
 batting <- select(tbl_df(Batting),playerID,yearID,teamID,G,AB:H)
 batting <- arrange(batting,playerID,yearID,teamID)
 players <- group_by(batting,playerID)
