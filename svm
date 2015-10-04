@@ -1,0 +1,46 @@
+##svm
+install.packages("e1071")
+library(e1071)
+data("iris")
+x = iris[51:150,c(3,4,5)]
+x[,3] = as.character(x[,3])
+x[,3] = as.factor(x[,3])
+head(x)
+iris.svm = svm(Species~.,data=x)
+plot(iris.svm,x,Petal.Width~Petal.Length)
+
+
+##kernlab的svm
+install.packages("kernlab")
+library(kernlab)
+### 一、线性SVM
+#### 1.1 生成玩具数据
+n <- 150; p <- 2
+sigma <- 1
+meanpos <- 0
+meanneg <- 3
+npos <- round(n/2)
+nneg <- n - npos
+#生成正负样本
+xpos <- matrix(rnorm(npos*p, mean=meanpos, sd=sigma),npos,p)
+xneg <- matrix(rnorm(nneg*p, mean=meanneg, sd=sigma),npos,p)
+x <- rbind(xpos, xneg)
+#生成标签
+y <- matrix(c(rep(1,npos),rep(-1,nneg)))
+#Visualize the data
+plot(x, col=ifelse(y>0,1,2))
+legend("topleft",c('Positive','Negative'),col=seq(2),pch=1,text.col = seq(2))
+par(mfrow=c(1,1))
+
+####　将数据划分为８０％的训练集和２０％的测试集
+ntrain <- round(n*0.8)
+tindex <- sample(n, ntrain)
+xtrain <- x[tindex,]
+xtest <- x[-tindex,]
+ytrain <- y[tindex]
+ytest <- y[-tindex]
+istrain = rep(0,n)
+istrain[tindex] = 1
+#Visualize
+plot(x,col=ifelse(y>0,1,2),pch=ifelse(istrain==1,1,2))
+legend("topleft",c('PositiveTrain','PositiveTest','NegativeTrain','NegativeTest'), col=c(1,1,2,2),pch=c(1,2,1,2),text.col=c(1,1,2,2))
